@@ -2,29 +2,40 @@
 {
 	public class Frame
 	{
+		private const string Strike = "X";
+		private const string Spare = "/";
 		private const string Miss = "-";
 
 		public Frame(string frameResult)
 		{
-			var scores = frameResult.Split('/');
-			var score1 = scores[0];
-			var score2 = scores[1];
+			if (frameResult.Contains(Strike))
+			{
+				IsStrike = true;
+				Score = 10;
+				return;
+			}
 
-			Score1 = score1 == Miss ? 0 : int.Parse(score1);
-			Score2 = score2 == Miss ? 0 : int.Parse(score2);
+			if (frameResult.Contains(Spare))
+			{
+				IsSpare = true;
+				Score = 10;
+				return;
+			}
 
-			IsSpare = Score1 + Score2 == 10 && Score2 > 0;
-			IsStrike = Score1 == 10;
+			var score1 = frameResult.Substring(0, 1);
+			var score2 = frameResult.Substring(1, 1);
+			Score = GetMissScore(score1) + GetMissScore(score2);
 		}
 
-		public int Score1 { get; }
-
-		public int Score2 { get; }
-
-		public int Total => Score1 + Score2;
+		public int Score { get; }
 
 		public bool IsSpare { get; }
 
 		public bool IsStrike { get; }
+
+		private static int GetMissScore(string score)
+		{
+			return score == Miss ? 0 : int.Parse(score);
+		}
 	}
 }
