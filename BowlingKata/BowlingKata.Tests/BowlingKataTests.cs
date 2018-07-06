@@ -7,6 +7,7 @@ namespace BowlingKata.Tests
 	public class BowlingKataTests
 	{
 		[TestMethod]
+		[Ignore]
 		public void TestMethod1()
 		{
 		}
