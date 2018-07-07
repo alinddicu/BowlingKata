@@ -5,21 +5,21 @@
 
 	public class Game : List<Frame>
 	{
-		public Game(string frameResultDisplay)
+		public Game(string framesResultsDisplays)
 		{
-			var frames = frameResultDisplay.Split(' ');
-			var first9 = frames.Take(9);
-			var lastFrame = string.Join(" ", frames.Skip(9));
-			var incompleteFrames = first9
+			var allFramesResultsDisplays = framesResultsDisplays.Split(' ');
+			var first9FramesResultsDisplays = allFramesResultsDisplays.Take(9);
+			var lastFrameResultDisplay = string.Join(" ", allFramesResultsDisplays.Skip(9));
+			var emptyNext2FramesFrames = first9FramesResultsDisplays
 				.Select(f => new FrameWithFrameScoreDisplay(new Frame(f, new Frame[0]), f))
-				.Concat(new[] { new FrameWithFrameScoreDisplay(new LastFrame(lastFrame), lastFrame) })
+				.Concat(new[] { new FrameWithFrameScoreDisplay(new LastFrame(lastFrameResultDisplay), lastFrameResultDisplay) })
 				.ToArray();
-			var ifs = incompleteFrames.Select(i => i.Frame).ToArray();
-			var completeFrames = incompleteFrames
+			var ifs = emptyNext2FramesFrames.Select(i => i.Frame).ToArray();
+			var completeFrames = emptyNext2FramesFrames
 				.Select((f, i) => new { f, i })
 				.Take(9)
 				.Select(f => new Frame(f.f.FrameResultDisplay, GetNext2Frames(ifs, f.i)))
-				.Concat(new[] { new LastFrame(lastFrame) });
+				.Concat(new[] { new LastFrame(lastFrameResultDisplay) });
 			AddRange(completeFrames);
 		}
 
