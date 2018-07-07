@@ -5,15 +5,20 @@
 
 	public class Frame
 	{
-		private const string Strike = "X";
-		private const string Spare = "/";
-		private const string Miss = "-";
+		protected const string Strike = "X";
+		protected const string Spare = "/";
+		protected const string Miss = "-";
 
 		private readonly string _frameResult;
 		private readonly IEnumerable<Frame> _next2Frames;
-		private readonly List<int> _points = new List<int>();
+
+		protected Frame()
+		{
+			Points = new List<int>();
+		}
 
 		public Frame(string frameResult, IEnumerable<Frame> next2Frames)
+			: this()
 		{
 			_frameResult = frameResult;
 			_next2Frames = next2Frames;
@@ -22,7 +27,7 @@
 				IsStrike = true;
 				Score1 = 10;
 				Score = 10;
-				_points.Add(10);
+				Points.Add(10);
 				return;
 			}
 
@@ -34,27 +39,29 @@
 				Score1 = score1 == Miss ? 0 : int.Parse(score1);
 				Score2 = score2 == Spare ? 10 - Score1 : int.Parse(score2);
 				Score = 10;
-				_points.AddRange(new List<int> { Score1, Score2 });
+				Points.AddRange(new List<int> { Score1, Score2 });
 				return;
 			}
 
 			Score1 = GetMissScore(frameResult.Substring(0, 1));
 			Score2 = GetMissScore(frameResult.Substring(1, 1));
 			Score = Score1 + Score2;
-			_points.AddRange(new List<int> { Score1, Score2 });
+			Points.AddRange(new List<int> { Score1, Score2 });
 		}
 
 		public int Score { get; }
 
-		public int Score1 { get; }
+		public int Score1 { get; set; }
 
-		public int Score2 { get; }
+		public int Score2 { get; set; }
 
 		public bool IsSpare { get; }
 
 		public bool IsStrike { get; }
 
-		public int ComputeTotal()
+		protected List<int> Points { get; }
+
+		public virtual int ComputeTotal()
 		{
 			if (IsStrike)
 			{
@@ -71,12 +78,12 @@
 
 		private int ComputeStrike()
 		{
-			return _next2Frames.SelectMany(f => f._points).Take(2).Sum();
+			return _next2Frames.SelectMany(f => f.Points).Take(2).Sum();
 		}
 
 		private int ComputeSpare()
 		{
-			return _next2Frames.SelectMany(f => f._points).Take(1).Sum();
+			return _next2Frames.SelectMany(f => f.Points).Take(1).Sum();
 		}
 
 		private static int GetMissScore(string score)
