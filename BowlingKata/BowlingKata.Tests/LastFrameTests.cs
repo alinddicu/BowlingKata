@@ -27,6 +27,12 @@
 			TestFrameTotal(new LastFrame("-/5"), 15);
 		}
 
+		[TestMethod]
+		public void TestLastFrameComputeTotalPointsWhen9SpareStrike()
+		{
+			TestFrameTotal(new LastFrame("9/X"), 20);
+		}
+
 		private static void TestFrameTotal(Frame frame, int expectedFrameTotal)
 		{
 			Check.That(frame.ComputeTotalPoints()).IsEqualTo(expectedFrameTotal);
