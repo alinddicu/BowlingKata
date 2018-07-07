@@ -16,9 +16,9 @@
 				.ToArray();
 			var ifs = emptyNext2FramesFrames.Select(i => i.Frame).ToArray();
 			var completeFrames = emptyNext2FramesFrames
-				.Select((f, i) => new { f, i })
+				.Select((emptyFrame, index) => new { EmptyFrame = emptyFrame, Index = index })
 				.Take(9)
-				.Select(f => new Frame(f.f.FrameResultDisplay, GetNext2Frames(ifs, f.i)))
+				.Select(f => new Frame(f.EmptyFrame.FrameResultDisplay, GetNext2Frames(ifs, f.Index)))
 				.Concat(new[] { new LastFrame(lastFrameResultDisplay) });
 			AddRange(completeFrames);
 		}
