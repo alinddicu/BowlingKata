@@ -8,13 +8,13 @@
 	public class FrameTests
 	{
 		[TestMethod]
-		public void TestNormalScore()
+		public void TestFrameComputeTotalPointsWhenNoStrikeAndNoSpare()
 		{
 			TestFrameTotal(new Frame("81", Enumerable.Empty<Frame>()), 9);
 		}
 
 		[TestMethod]
-		public void TestMiss()
+		public void TestFrameComputeTotalPointsWhenMiss()
 		{
 			TestFrameTotal(new Frame("--", Enumerable.Empty<Frame>()), 0);
 			TestFrameTotal(new Frame("1-", Enumerable.Empty<Frame>()), 1);
@@ -22,21 +22,21 @@
 		}
 
 		[TestMethod]
-		public void TestSpare()
+		public void TestFrameComputeTotalPointsWhenSpare()
 		{
 			TestFrameTotal(new Frame("6/", Enumerable.Empty<Frame>()), 10);
 			TestFrameTotal(new Frame("-/", Enumerable.Empty<Frame>()), 10);
 		}
 
 		[TestMethod]
-		public void TestStrike()
+		public void TestFrameComputeTotalPointsWhenStrike()
 		{
 			TestFrameTotal(new Frame("X", Enumerable.Empty<Frame>()), 10);
 		}
 
 		private static void TestFrameTotal(Frame frame, int expectedFrameTotal)
 		{
-			Check.That(frame.ComputeTotal()).IsEqualTo(expectedFrameTotal);
+			Check.That(frame.ComputeTotalPoints()).IsEqualTo(expectedFrameTotal);
 		}
 	}
 }

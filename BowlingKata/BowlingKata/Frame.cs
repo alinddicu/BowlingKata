@@ -56,7 +56,7 @@
 			BonusPointsForPreviousFrame.AddRange(new List<int> { Points1StThrow, Points2NdThrow });
 		}
 
-		public virtual int ComputeTotal()
+		public virtual int ComputeTotalPoints()
 		{
 			if (_isStrike)
 			{

@@ -1,5 +1,7 @@
 ﻿namespace BowlingKata
 {
+	using System.Linq;
+
 	public class LastFrame : Frame
 	{
 		private readonly int _points3RdThrow;
@@ -7,14 +9,23 @@
 		public LastFrame(string frameResultDisplay)
 			: base(frameResultDisplay)
 		{
-			var scores = frameResultDisplay.Split(' ');
-			if (scores.Length == 1)
+			string[] scores;
+			if (frameResultDisplay.ToCharArray().Count(c => c.ToString() == Strike) == 3)
+			{
+				scores = frameResultDisplay.Split(' ');
+			}
+			else if (frameResultDisplay.Contains(Strike) || frameResultDisplay.Contains(Spare))
 			{
 				var score1 = frameResultDisplay.Substring(0, 1);
 				var score2 = frameResultDisplay.Substring(1, 1);
-				scores = score2 == Miss
-					? new[] { score1, score2 }
-					: new[] { score1, score2, frameResultDisplay.Substring(2, 1) };
+				var score3 = frameResultDisplay.Substring(2, 1);
+				scores = new[] { score1, score2, score3 };
+			}
+			else
+			{
+				var score1 = frameResultDisplay.Substring(0, 1);
+				var score2 = frameResultDisplay.Substring(1, 1);
+				scores = new[] { score1, score2 };
 			}
 
 			Points1StThrow = GetScore(scores[0]);
@@ -42,7 +53,7 @@
 			}
 		}
 
-		public override int ComputeTotal()
+		public override int ComputeTotalPoints()
 		{
 			return Points1StThrow + Points2NdThrow + _points3RdThrow;
 		}

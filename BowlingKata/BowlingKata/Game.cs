@@ -42,7 +42,7 @@
 
 		public int GetScore()
 		{
-			var scores = this.Select(f => f.ComputeTotal()).ToArray();
+			var scores = this.Select(f => f.ComputeTotalPoints()).ToArray();
 			return scores.Sum(f => f);
 		}
 
