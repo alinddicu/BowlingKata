@@ -26,6 +26,7 @@
 
 		private static int GetScore(string score)
 		{
+			score = score.Substring(0, 1);
 			switch (score)
 			{
 				case Miss:
