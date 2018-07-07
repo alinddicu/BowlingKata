@@ -5,15 +5,15 @@
 		private readonly int _points3RdThrow;
 
 		public LastFrame(string frameResultDisplay)
-			:base(frameResultDisplay)
+			: base(frameResultDisplay)
 		{
 			var scores = frameResultDisplay.Split(' ');
 			if (scores.Length == 1)
 			{
 				var score1 = frameResultDisplay.Substring(0, 1);
 				var score2 = frameResultDisplay.Substring(1, 1);
-				scores = score2 == Miss 
-					? new[] {score1, score2} 
+				scores = score2 == Miss
+					? new[] { score1, score2 }
 					: new[] { score1, score2, frameResultDisplay.Substring(2, 1) };
 			}
 
@@ -24,7 +24,7 @@
 				_points3RdThrow = GetScore(scores[2]);
 			}
 
-			BonusPointsForPreviousThrow.AddRange(new[] { Points1StThrow, Points2NdThrow, _points3RdThrow });
+			BonusPointsForPreviousFrame.AddRange(new[] { Points1StThrow, Points2NdThrow, _points3RdThrow });
 		}
 
 		private int GetScore(string score)
