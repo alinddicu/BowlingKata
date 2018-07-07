@@ -2,7 +2,7 @@
 {
 	public class LastFrame : Frame
 	{
-		private readonly int _score3;
+		private readonly int _points3RdThrow;
 
 		public LastFrame(string frameResult)
 		{
@@ -16,14 +16,14 @@
 					: new[] { score1, score2, frameResult.Substring(2, 1) };
 			}
 
-			Score1 = GetScore(scores[0]);
-			Score2 = GetScore(scores[1]);
-			if (Score2 == 10 || scores[1] == Spare)
+			Points1StThrow = GetScore(scores[0]);
+			Points2NdThrow = GetScore(scores[1]);
+			if (Points2NdThrow == 10 || scores[1] == Spare)
 			{
-				_score3 = GetScore(scores[2]);
+				_points3RdThrow = GetScore(scores[2]);
 			}
 
-			Points.AddRange(new[] { Score1, Score2, _score3 });
+			BonusPointsForPreviousThrow.AddRange(new[] { Points1StThrow, Points2NdThrow, _points3RdThrow });
 		}
 
 		private int GetScore(string score)
@@ -35,7 +35,7 @@
 				case Strike:
 					return 10;
 				case Spare:
-					return 10 - Score1;
+					return 10 - Points1StThrow;
 				default:
 					return int.Parse(score);
 			}
@@ -43,7 +43,7 @@
 
 		public override int ComputeTotal()
 		{
-			return Score1 + Score2 + _score3;
+			return Points1StThrow + Points2NdThrow + _points3RdThrow;
 		}
 	}
 }

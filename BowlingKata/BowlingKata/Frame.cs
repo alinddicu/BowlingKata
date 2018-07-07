@@ -9,57 +9,57 @@
 		protected const string Spare = "/";
 		protected const string Miss = "-";
 
-		private readonly string _frameResult;
+		private readonly string _frameResultDisplay;
 		private readonly IEnumerable<Frame> _next2Frames;
 
 		protected Frame()
 		{
-			Points = new List<int>();
+			BonusPointsForPreviousThrow = new List<int>();
 		}
 
-		public Frame(string frameResult, IEnumerable<Frame> next2Frames)
+		public Frame(string frameResultDisplay, IEnumerable<Frame> next2Frames)
 			: this()
 		{
-			_frameResult = frameResult;
+			_frameResultDisplay = frameResultDisplay;
 			_next2Frames = next2Frames;
-			if (frameResult.Contains(Strike))
+			if (frameResultDisplay.Contains(Strike))
 			{
 				IsStrike = true;
-				Score1 = 10;
+				Points1StThrow = 10;
 				Score = 10;
-				Points.Add(10);
+				BonusPointsForPreviousThrow.Add(10);
 				return;
 			}
 
-			if (frameResult.Contains(Spare))
+			if (frameResultDisplay.Contains(Spare))
 			{
 				IsSpare = true;
-				var score1 = frameResult.Substring(0, 1);
-				var score2 = frameResult.Substring(1, 1);
-				Score1 = score1 == Miss ? 0 : int.Parse(score1);
-				Score2 = score2 == Spare ? 10 - Score1 : int.Parse(score2);
+				var score1 = frameResultDisplay.Substring(0, 1);
+				var score2 = frameResultDisplay.Substring(1, 1);
+				Points1StThrow = score1 == Miss ? 0 : int.Parse(score1);
+				Points2NdThrow = score2 == Spare ? 10 - Points1StThrow : int.Parse(score2);
 				Score = 10;
-				Points.AddRange(new List<int> { Score1, Score2 });
+				BonusPointsForPreviousThrow.AddRange(new List<int> { Points1StThrow, Points2NdThrow });
 				return;
 			}
 
-			Score1 = GetMissScore(frameResult.Substring(0, 1));
-			Score2 = GetMissScore(frameResult.Substring(1, 1));
-			Score = Score1 + Score2;
-			Points.AddRange(new List<int> { Score1, Score2 });
+			Points1StThrow = GetMissScore(frameResultDisplay.Substring(0, 1));
+			Points2NdThrow = GetMissScore(frameResultDisplay.Substring(1, 1));
+			Score = Points1StThrow + Points2NdThrow;
+			BonusPointsForPreviousThrow.AddRange(new List<int> { Points1StThrow, Points2NdThrow });
 		}
 
 		public int Score { get; }
 
-		public int Score1 { get; set; }
+		public int Points1StThrow { get; protected set; }
 
-		public int Score2 { get; set; }
+		public int Points2NdThrow { get; protected set; }
 
 		public bool IsSpare { get; }
 
 		public bool IsStrike { get; }
 
-		protected List<int> Points { get; }
+		protected List<int> BonusPointsForPreviousThrow { get; }
 
 		public virtual int ComputeTotal()
 		{
@@ -78,12 +78,12 @@
 
 		private int ComputeStrike()
 		{
-			return _next2Frames.SelectMany(f => f.Points).Take(2).Sum();
+			return _next2Frames.SelectMany(f => f.BonusPointsForPreviousThrow).Take(2).Sum();
 		}
 
 		private int ComputeSpare()
 		{
-			return _next2Frames.SelectMany(f => f.Points).Take(1).Sum();
+			return _next2Frames.SelectMany(f => f.BonusPointsForPreviousThrow).Take(1).Sum();
 		}
 
 		private static int GetMissScore(string score)
@@ -93,7 +93,7 @@
 
 		public override string ToString()
 		{
-			return $"FrameResult: {_frameResult}, Next2Frames: {string.Join(", ", _next2Frames)}";
+			return $"FrameResult: {_frameResultDisplay}, Next2Frames: [{string.Join(", ", _next2Frames)}]";
 		}
 	}
 }

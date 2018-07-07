@@ -5,20 +5,20 @@
 
 	public class Game : List<Frame>
 	{
-		public Game(string framesSuite)
+		public Game(string frameResultDisplay)
 		{
-			var frames = framesSuite.Split(' ');
+			var frames = frameResultDisplay.Split(' ');
 			var first9 = frames.Take(9);
 			var lastFrame = string.Join(" ", frames.Skip(9));
 			var incompleteFrames = first9
-				.Select(f => new FrameWithFrameResult(new Frame(f, new Frame[0]), f))
-				.Concat(new[] { new FrameWithFrameResult(new LastFrame(lastFrame), lastFrame) })
+				.Select(f => new FrameWithFrameScoreDisplay(new Frame(f, new Frame[0]), f))
+				.Concat(new[] { new FrameWithFrameScoreDisplay(new LastFrame(lastFrame), lastFrame) })
 				.ToArray();
 			var ifs = incompleteFrames.Select(i => i.Frame).ToArray();
 			var completeFrames = incompleteFrames
 				.Select((f, i) => new { f, i })
 				.Take(9)
-				.Select(f => new Frame(f.f.FrameResult, GetNext2Frames(ifs, f.i)))
+				.Select(f => new Frame(f.f.FrameResultDisplay, GetNext2Frames(ifs, f.i)))
 				.Concat(new[] { new LastFrame(lastFrame) });
 			AddRange(completeFrames);
 		}
@@ -46,17 +46,17 @@
 			return scores.Sum(f => f);
 		}
 
-		private class FrameWithFrameResult
+		private class FrameWithFrameScoreDisplay
 		{
-			public FrameWithFrameResult(Frame frame, string frameResult)
+			public FrameWithFrameScoreDisplay(Frame frame, string frameResultDisplay)
 			{
 				Frame = frame;
-				FrameResult = frameResult;
+				FrameResultDisplay = frameResultDisplay;
 			}
 
-			public Frame Frame { get; private set; }
+			public Frame Frame { get; }
 
-			public string FrameResult { get; private set; }
+			public string FrameResultDisplay { get; }
 		}
 	}
 }

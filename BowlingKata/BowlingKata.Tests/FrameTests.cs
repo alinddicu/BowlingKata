@@ -38,8 +38,8 @@
 		{
 			Check.That(frame.IsSpare).IsEqualTo(isSpare);
 			Check.That(frame.IsStrike).IsEqualTo(isStrike);
-			Check.That(frame.Score1).IsEqualTo(score1);
-			Check.That(frame.Score2).IsEqualTo(score2);
+			Check.That(frame.Points1StThrow).IsEqualTo(score1);
+			Check.That(frame.Points2NdThrow).IsEqualTo(score2);
 			Check.That(frame.Score).IsEqualTo(score);
 		}
 	}
