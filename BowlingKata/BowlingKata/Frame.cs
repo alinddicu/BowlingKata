@@ -9,18 +9,19 @@
 		protected const string Spare = "/";
 		protected const string Miss = "-";
 
-		private readonly string _frameResultDisplay;
+		protected readonly string FrameResultDisplay;
 		private readonly IEnumerable<Frame> _next2Frames;
 
-		protected Frame()
+		protected Frame(string frameResultDisplay)
 		{
+			FrameResultDisplay = frameResultDisplay;
 			BonusPointsForPreviousThrow = new List<int>();
 		}
 
 		public Frame(string frameResultDisplay, IEnumerable<Frame> next2Frames)
-			: this()
+			: this(frameResultDisplay)
 		{
-			_frameResultDisplay = frameResultDisplay;
+			FrameResultDisplay = frameResultDisplay;
 			_next2Frames = next2Frames;
 			if (frameResultDisplay.Contains(Strike))
 			{
@@ -93,7 +94,7 @@
 
 		public override string ToString()
 		{
-			return $"FrameResult: {_frameResultDisplay}, Next2Frames: [{string.Join(", ", _next2Frames)}]";
+			return $"FrameResult: {FrameResultDisplay}, Next2Frames: [{string.Join(", ", _next2Frames)}]";
 		}
 	}
 }

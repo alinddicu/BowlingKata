@@ -4,16 +4,17 @@
 	{
 		private readonly int _points3RdThrow;
 
-		public LastFrame(string frameResult)
+		public LastFrame(string frameResultDisplay)
+			:base(frameResultDisplay)
 		{
-			var scores = frameResult.Split(' ');
+			var scores = frameResultDisplay.Split(' ');
 			if (scores.Length == 1)
 			{
-				var score1 = frameResult.Substring(0, 1);
-				var score2 = frameResult.Substring(1, 1);
+				var score1 = frameResultDisplay.Substring(0, 1);
+				var score2 = frameResultDisplay.Substring(1, 1);
 				scores = score2 == Miss 
 					? new[] {score1, score2} 
-					: new[] { score1, score2, frameResult.Substring(2, 1) };
+					: new[] { score1, score2, frameResultDisplay.Substring(2, 1) };
 			}
 
 			Points1StThrow = GetScore(scores[0]);
@@ -44,6 +45,11 @@
 		public override int ComputeTotal()
 		{
 			return Points1StThrow + Points2NdThrow + _points3RdThrow;
+		}
+
+		public override string ToString()
+		{
+			return $"FrameResult: {FrameResultDisplay}";
 		}
 	}
 }
