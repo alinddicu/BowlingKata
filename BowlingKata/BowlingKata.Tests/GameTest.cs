@@ -17,5 +17,11 @@
 		{
 			Check.That(new Game("X X X X X X X X X X X X").GetScore()).IsEqualTo(300);
 		}
+		
+		[TestMethod]
+		public void TestAllSparePlusFinal5()
+		{
+			Check.That(new Game("5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5").GetScore()).IsEqualTo(150);
+		}
 	}
 }
